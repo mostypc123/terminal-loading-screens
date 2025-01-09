@@ -1,0 +1,39 @@
+name: Deploy Node.js App
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install Dependencies
+        run: |
+          npm install
+      
+      - name: Start Node.js Server
+        run: |
+          node index.js &
+          sleep 5  # Give the server time to start
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          force_orphan: true
+
+      - name: Display URLs
+        run: |
+          echo "Deployed to Pages URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}"
