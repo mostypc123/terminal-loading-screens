@@ -53,7 +53,7 @@ git clone https://github.com/mostypc123/terminal-loading-screens
 
 1. Start the server:
    ```bash
-   node server.js
+   node index.js
    ```
 
 2. Connect using curl with your preferred style:
